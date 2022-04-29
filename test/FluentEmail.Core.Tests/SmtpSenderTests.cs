@@ -83,7 +83,7 @@ namespace FluentEmail.Smtp.Tests
             var email = TestEmail
                 .Attach(attachment);
 
-            var response = await email.SendAsync();
+            var response = await email.SendAsync().ConfigureAwait(false);
 
             Assert.IsTrue(response.Successful);
             var files = Directory.EnumerateFiles(tempDirectory, "*.eml");
@@ -97,7 +97,7 @@ namespace FluentEmail.Smtp.Tests
                 .Body("<h2>Test</h2><p>some body text</p>", true)
                 .PlaintextAlternativeBody("Test - Some body text");
 
-            var response = await email.SendAsync();
+            var response = await email.SendAsync().ConfigureAwait(false);
 
             Assert.IsTrue(response.Successful);
         }

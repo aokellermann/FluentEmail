@@ -52,7 +52,7 @@ namespace FluentEmail.Graph.Tests
                 .Subject("Test Async Email")
                 .Body("Test email from Graph sender unit test");
 
-            var response = await email.SendAsync();
+            var response = await email.SendAsync().ConfigureAwait(false);
             Assert.IsTrue(response.Successful);
         }
 
@@ -79,7 +79,7 @@ namespace FluentEmail.Graph.Tests
                 .Body("Test email from Graph sender unit test")
                 .Attach(attachment);
 
-            var response = await email.SendAsync();
+            var response = await email.SendAsync().ConfigureAwait(false);
             Assert.IsTrue(response.Successful);
         }
 
@@ -93,7 +93,7 @@ namespace FluentEmail.Graph.Tests
                 .Body("Test email from Graph sender unit test")
                 .HighPriority();
 
-            var response = await email.SendAsync();
+            var response = await email.SendAsync().ConfigureAwait(false);
             Assert.IsTrue(response.Successful);
         }
     }

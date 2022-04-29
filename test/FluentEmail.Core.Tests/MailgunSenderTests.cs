@@ -30,7 +30,7 @@ namespace FluentEmail.Mailgun.Tests
                 .Subject(subject)
                 .Body(body);
 
-            var response = await email.SendAsync();
+            var response = await email.SendAsync().ConfigureAwait(false);
 
             Assert.IsTrue(response.Successful);
         }
@@ -44,7 +44,7 @@ namespace FluentEmail.Mailgun.Tests
                 .Subject(subject)
                 .Body(body);
 
-            var response = await email.SendAsync();
+            var response = await email.SendAsync().ConfigureAwait(false);
 
             Assert.IsTrue(response.Successful);
             Assert.IsNotEmpty(response.MessageId);
@@ -60,7 +60,7 @@ namespace FluentEmail.Mailgun.Tests
                 .Body(body)
                 .Tag("test");
 
-            var response = await email.SendAsync();
+            var response = await email.SendAsync().ConfigureAwait(false);
 
             Assert.IsTrue(response.Successful);
         }
@@ -75,7 +75,7 @@ namespace FluentEmail.Mailgun.Tests
                 .Body(body)
                 .Header("X-Mailgun-Variables", JsonConvert.SerializeObject(new Variable { Var1 = "Test"}));
 
-            var response = await email.SendAsync();
+            var response = await email.SendAsync().ConfigureAwait(false);
 
             Assert.IsTrue(response.Successful);
         }
@@ -103,7 +103,7 @@ namespace FluentEmail.Mailgun.Tests
                 .Body(body)
                 .Attach(attachment);
 
-            var response = await email.SendAsync();
+            var response = await email.SendAsync().ConfigureAwait(false);
 
             Assert.IsTrue(response.Successful);
         }
@@ -129,7 +129,7 @@ namespace FluentEmail.Mailgun.Tests
                           "<p>You should see an image without an attachment, or without a download prompt, depending on the email client.</p></html>", true)
                     .Attach(attachment);
 
-                var response = await email.SendAsync();
+                var response = await email.SendAsync().ConfigureAwait(false);
 
                 Assert.IsTrue(response.Successful);
             }

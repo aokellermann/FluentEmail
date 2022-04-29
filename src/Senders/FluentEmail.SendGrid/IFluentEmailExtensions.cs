@@ -12,7 +12,7 @@ namespace FluentEmail.SendGrid
         public static async Task<SendResponse> SendWithTemplateAsync(this IFluentEmail email, string templateId, object templateData)
         {
             var sendGridSender = email.Sender as ISendGridSender;
-            return await sendGridSender.SendWithTemplateAsync(email, templateId, templateData);
+            return await sendGridSender.SendWithTemplateAsync(email, templateId, templateData).ConfigureAwait(false);
         }
     }
 }

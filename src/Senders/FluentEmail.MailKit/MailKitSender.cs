@@ -110,7 +110,7 @@ namespace FluentEmail.MailKitSmtp
             {
                 if (_smtpClientOptions.UsePickupDirectory)
                 {
-                    await this.SaveToPickupDirectory(message, _smtpClientOptions.MailPickupDirectory);
+                    await this.SaveToPickupDirectory(message, _smtpClientOptions.MailPickupDirectory).ConfigureAwait(false);
                     return response;
                 }
 
@@ -122,7 +122,7 @@ namespace FluentEmail.MailKitSmtp
                             _smtpClientOptions.Server,
                             _smtpClientOptions.Port,
                             _smtpClientOptions.SocketOptions.Value,
-                            token.GetValueOrDefault());
+                            token.GetValueOrDefault()).ConfigureAwait(false);
                     }
                     else
                     {
@@ -130,17 +130,17 @@ namespace FluentEmail.MailKitSmtp
                             _smtpClientOptions.Server,
                             _smtpClientOptions.Port,
                             _smtpClientOptions.UseSsl,
-                            token.GetValueOrDefault());
+                            token.GetValueOrDefault()).ConfigureAwait(false);
                     }
 
                     // Note: only needed if the SMTP server requires authentication
                     if (_smtpClientOptions.RequiresAuthentication)
                     {
-                        await client.AuthenticateAsync(_smtpClientOptions.User, _smtpClientOptions.Password, token.GetValueOrDefault());
+                        await client.AuthenticateAsync(_smtpClientOptions.User, _smtpClientOptions.Password, token.GetValueOrDefault()).ConfigureAwait(false);
                     }
 
-                    await client.SendAsync(message, token.GetValueOrDefault());
-                    await client.DisconnectAsync(true, token.GetValueOrDefault());
+                    await client.SendAsync(message, token.GetValueOrDefault()).ConfigureAwait(false);
+                    await client.DisconnectAsync(true, token.GetValueOrDefault()).ConfigureAwait(false);
                 }
             }
             catch (Exception ex)
@@ -168,7 +168,7 @@ namespace FluentEmail.MailKitSmtp
             {
                 using (var stream = new FileStream(path, FileMode.CreateNew))
                 {
-                    await message.WriteToAsync(stream);
+                    await message.WriteToAsync(stream).ConfigureAwait(false);
                     return;
                 }
             }

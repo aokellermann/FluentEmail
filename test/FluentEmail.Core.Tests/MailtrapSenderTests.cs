@@ -46,7 +46,7 @@ namespace FluentEmail.Mailtrap.Tests
                 .Subject(subject)
                 .Body(body);
 
-            var response = await email.SendAsync();
+            var response = await email.SendAsync().ConfigureAwait(false);
 
             Assert.IsTrue(response.Successful);
         }
@@ -74,7 +74,7 @@ namespace FluentEmail.Mailtrap.Tests
                 .Body(body)
                 .Attach(attachment);
 
-            var response = await email.SendAsync();
+            var response = await email.SendAsync().ConfigureAwait(false);
 
             Assert.IsTrue(response.Successful);
         }
@@ -100,7 +100,7 @@ namespace FluentEmail.Mailtrap.Tests
                           "<p>You should see an image without an attachment, or without a download prompt, depending on the email client.</p></html>", true)
                     .Attach(attachment);
 
-                var response = await email.SendAsync();
+                var response = await email.SendAsync().ConfigureAwait(false);
 
                 Assert.IsTrue(response.Successful);
             }

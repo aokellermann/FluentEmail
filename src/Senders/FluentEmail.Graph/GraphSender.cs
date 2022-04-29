@@ -156,7 +156,7 @@ namespace FluentEmail.Graph
                 await _graphClient.Users[email.Data.FromAddress.EmailAddress]
                     .SendMail(message, _saveSent)
                     .Request()
-                    .PostAsync();
+                    .PostAsync().ConfigureAwait(false);
 
                 return new SendResponse
                 {

@@ -37,7 +37,7 @@ namespace FluentEmail.SendGrid.Tests
                 .Subject(subject)
                 .Body(body);
 
-            var response = await email.SendAsync();
+            var response = await email.SendAsync().ConfigureAwait(false);
 
             Assert.IsTrue(response.Successful);
         }
@@ -58,7 +58,7 @@ namespace FluentEmail.SendGrid.Tests
                 .To(toEmail, toName)
                 .Subject(subject);
 
-            var response = await email.SendWithTemplateAsync(templateId, templateData);
+            var response = await email.SendWithTemplateAsync(templateId, templateData).ConfigureAwait(false);
 
             Assert.IsTrue(response.Successful);
         }
@@ -76,7 +76,7 @@ namespace FluentEmail.SendGrid.Tests
                 .Subject(subject)
                 .Body(body);
 
-            var response = await email.SendAsync();
+            var response = await email.SendAsync().ConfigureAwait(false);
 
             Assert.IsTrue(response.Successful);
         }
@@ -95,7 +95,7 @@ namespace FluentEmail.SendGrid.Tests
                 .Tag("TestCategory")
                 .Body(body);
 
-            var response = await email.SendAsync();
+            var response = await email.SendAsync().ConfigureAwait(false);
 
             Assert.IsTrue(response.Successful);
         }
@@ -123,7 +123,7 @@ namespace FluentEmail.SendGrid.Tests
                     .Attach(attachment);
 
 
-                var response = await email.SendAsync();
+                var response = await email.SendAsync().ConfigureAwait(false);
 
                 Assert.IsTrue(response.Successful);
             }
@@ -142,7 +142,7 @@ namespace FluentEmail.SendGrid.Tests
                 .Body(body)
                 .HighPriority();
 
-            var response = await email.SendAsync();
+            var response = await email.SendAsync().ConfigureAwait(false);
 
             Assert.IsTrue(response.Successful);
         }
@@ -160,7 +160,7 @@ namespace FluentEmail.SendGrid.Tests
                 .Body(body)
                 .LowPriority();
 
-            var response = await email.SendAsync();
+            var response = await email.SendAsync().ConfigureAwait(false);
 
             Assert.IsTrue(response.Successful);
         }

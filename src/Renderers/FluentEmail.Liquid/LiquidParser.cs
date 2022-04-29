@@ -21,7 +21,7 @@ public class LiquidParser : FluidParser
     {
         const string viewExtension = ".liquid";
 
-        var relativeLayoutPath = (await expression.EvaluateAsync(context)).ToStringValue();
+        var relativeLayoutPath = (await expression.EvaluateAsync(context).ConfigureAwait(false)).ToStringValue();
 
         if (!relativeLayoutPath.EndsWith(viewExtension, StringComparison.OrdinalIgnoreCase))
         {
@@ -42,7 +42,7 @@ public class LiquidParser : FluidParser
 
         if (context.AmbientValues.TryGetValue("Body", out var body))
         {
-            await writer.WriteAsync((string)body);
+            await writer.WriteAsync((string)body).ConfigureAwait(false);
         }
         else
         {
@@ -74,7 +74,7 @@ public class LiquidParser : FluidParser
             {
                 foreach(var statement in section)
                 {
-                    await statement.WriteToAsync(writer, encoder, context);
+                    await statement.WriteToAsync(writer, encoder, context).ConfigureAwait(false);
                 }
             }
         }

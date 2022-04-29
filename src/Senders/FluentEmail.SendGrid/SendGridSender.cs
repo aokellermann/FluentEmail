@@ -30,7 +30,7 @@ namespace FluentEmail.SendGrid
 
         public async Task<SendResponse> SendAsync(IFluentEmail email, CancellationToken? token = null)
         {
-            var mailMessage = await BuildSendGridMessage(email);
+            var mailMessage = await BuildSendGridMessage(email).ConfigureAwait(false);
 
             if (email.Data.IsHtml)
             {
@@ -46,19 +46,19 @@ namespace FluentEmail.SendGrid
                 mailMessage.PlainTextContent = email.Data.PlaintextAlternativeBody;
             }
 
-            var sendResponse = await SendViaSendGrid(mailMessage, token);
+            var sendResponse = await SendViaSendGrid(mailMessage, token).ConfigureAwait(false);
 
             return sendResponse;
         }
 
         public async Task<SendResponse> SendWithTemplateAsync(IFluentEmail email, string templateId, object templateData, CancellationToken? token = null)
         {
-            var mailMessage = await BuildSendGridMessage(email);
+            var mailMessage = await BuildSendGridMessage(email).ConfigureAwait(false);
 
             mailMessage.SetTemplateId(templateId);
             mailMessage.SetTemplateData(templateData);
 
-            var sendResponse = await SendViaSendGrid(mailMessage, token);
+            var sendResponse = await SendViaSendGrid(mailMessage, token).ConfigureAwait(false);
 
             return sendResponse;
         }
@@ -134,7 +134,7 @@ namespace FluentEmail.SendGrid
             {
                 foreach (var attachment in email.Data.Attachments)
                 {
-                    var sendGridAttachment = await ConvertAttachment(attachment);
+                    var sendGridAttachment = await ConvertAttachment(attachment).ConfigureAwait(false);
                     mailMessage.AddAttachment(sendGridAttachment.Filename, sendGridAttachment.Content,
                         sendGridAttachment.Type, sendGridAttachment.Disposition, sendGridAttachment.ContentId);
                 }
@@ -146,7 +146,7 @@ namespace FluentEmail.SendGrid
         private async Task<SendResponse> SendViaSendGrid(SendGridMessage mailMessage, CancellationToken? token = null)
         {
             var sendGridClient = new SendGridClient(_apiKey);
-            var sendGridResponse = await sendGridClient.SendEmailAsync(mailMessage, token.GetValueOrDefault());
+            var sendGridResponse = await sendGridClient.SendEmailAsync(mailMessage, token.GetValueOrDefault()).ConfigureAwait(false);
 
             var sendResponse = new SendResponse();
 
@@ -160,7 +160,7 @@ namespace FluentEmail.SendGrid
             if (IsHttpSuccess((int)sendGridResponse.StatusCode)) return sendResponse;
 
             sendResponse.ErrorMessages.Add($"{sendGridResponse.StatusCode}");
-            var messageBodyDictionary = await sendGridResponse.DeserializeResponseBodyAsync();
+            var messageBodyDictionary = await sendGridResponse.DeserializeResponseBodyAsync().ConfigureAwait(false);
 
             if (messageBodyDictionary.ContainsKey("errors"))
             {
@@ -179,7 +179,7 @@ namespace FluentEmail.SendGrid
 
         private async Task<SendGridAttachment> ConvertAttachment(Core.Models.Attachment attachment) => new SendGridAttachment
         {
-            Content = await GetAttachmentBase64String(attachment.Data),
+            Content = await GetAttachmentBase64String(attachment.Data).ConfigureAwait(false),
             Filename = attachment.Filename,
             Type = attachment.ContentType
         };
@@ -188,7 +188,7 @@ namespace FluentEmail.SendGrid
         {
             using (var ms = new MemoryStream())
             {
-                await stream.CopyToAsync(ms);
+                await stream.CopyToAsync(ms).ConfigureAwait(false);
                 return Convert.ToBase64String(ms.ToArray());
             }
         }

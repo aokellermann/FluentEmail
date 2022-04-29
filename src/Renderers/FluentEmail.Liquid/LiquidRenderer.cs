@@ -50,7 +50,7 @@ namespace FluentEmail.Liquid
 
             rendererOptions.ConfigureTemplateContext?.Invoke(context, model!);
 
-            var body = await viewTemplate.RenderAsync(context, rendererOptions.TextEncoder);
+            var body = await viewTemplate.RenderAsync(context, rendererOptions.TextEncoder).ConfigureAwait(false);
 
             // if a layout is specified while rendering a view, execute it
             if (context.AmbientValues.TryGetValue("Layout", out var layoutPath))
@@ -58,7 +58,7 @@ namespace FluentEmail.Liquid
                 context.AmbientValues["Body"] = body;
                 var layoutTemplate = ParseLiquidFile((string)layoutPath, fileProvider!);
 
-                return await layoutTemplate.RenderAsync(context, rendererOptions.TextEncoder);
+                return await layoutTemplate.RenderAsync(context, rendererOptions.TextEncoder).ConfigureAwait(false);
             }
 
             return body;

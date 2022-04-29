@@ -49,43 +49,43 @@ namespace FluentEmail.Mailgun.HttpHelpers
     {
         public static async Task<ApiResponse<T>> Get<T>(this HttpClient client, string url)
         {
-            var response = await client.GetAsync(url);
-            var qr = await QuickResponse<T>.FromMessage(response);
+            var response = await client.GetAsync(url).ConfigureAwait(false);
+            var qr = await QuickResponse<T>.FromMessage(response).ConfigureAwait(false);
             return qr.ToApiResponse();
         }
 
         public static async Task<ApiResponse> GetFile(this HttpClient client, string url)
         {
-            var response = await client.GetAsync(url);
-            var qr = await QuickFile.FromMessage(response);
+            var response = await client.GetAsync(url).ConfigureAwait(false);
+            var qr = await QuickFile.FromMessage(response).ConfigureAwait(false);
             return qr.ToApiResponse();
         }
 
         public static async Task<ApiResponse<T>> Post<T>(this HttpClient client, string url, IEnumerable<KeyValuePair<string, string>> parameters)
         {
-            var response = await client.PostAsync(url, HttpClientHelpers.GetPostBody(parameters));
-            var qr = await QuickResponse<T>.FromMessage(response);
+            var response = await client.PostAsync(url, HttpClientHelpers.GetPostBody(parameters)).ConfigureAwait(false);
+            var qr = await QuickResponse<T>.FromMessage(response).ConfigureAwait(false);
             return qr.ToApiResponse();
         }
 
         public static async Task<ApiResponse<T>> Post<T>(this HttpClient client, string url, object data)
         {
-            var response = await client.PostAsync(url, HttpClientHelpers.GetJsonBody(data));
-            var qr = await QuickResponse<T>.FromMessage(response);
+            var response = await client.PostAsync(url, HttpClientHelpers.GetJsonBody(data)).ConfigureAwait(false);
+            var qr = await QuickResponse<T>.FromMessage(response).ConfigureAwait(false);
             return qr.ToApiResponse();
         }
 
         public static async Task<ApiResponse<T>> PostMultipart<T>(this HttpClient client, string url, IEnumerable<KeyValuePair<string, string>> parameters, IEnumerable<HttpFile> files)
         {
             var response = await client.PostAsync(url, HttpClientHelpers.GetMultipartFormDataContentBody(parameters, files)).ConfigureAwait(false);
-            var qr = await QuickResponse<T>.FromMessage(response);
+            var qr = await QuickResponse<T>.FromMessage(response).ConfigureAwait(false);
             return qr.ToApiResponse();
         }
 
         public static async Task<ApiResponse> Delete(this HttpClient client, string url)
         {
-            var response = await client.DeleteAsync(url);
-            var qr = await QuickResponse.FromMessage(response);
+            var response = await client.DeleteAsync(url).ConfigureAwait(false);
+            var qr = await QuickResponse.FromMessage(response).ConfigureAwait(false);
             return qr.ToApiResponse();
         }
     }
@@ -115,7 +115,7 @@ namespace FluentEmail.Mailgun.HttpHelpers
         {
             var response = new QuickResponse();
             response.Message = message;
-            response.ResponseBody = await message.Content.ReadAsStringAsync();
+            response.ResponseBody = await message.Content.ReadAsStringAsync().ConfigureAwait(false);
 
             if (!message.IsSuccessStatusCode)
             {
@@ -166,7 +166,7 @@ namespace FluentEmail.Mailgun.HttpHelpers
         {
             var response = new QuickResponse<T>();
             response.Message = message;
-            response.ResponseBody = await message.Content.ReadAsStringAsync();
+            response.ResponseBody = await message.Content.ReadAsStringAsync().ConfigureAwait(false);
 
             if (message.IsSuccessStatusCode)
             {
@@ -194,11 +194,11 @@ namespace FluentEmail.Mailgun.HttpHelpers
         {
             var response = new QuickFile();
             response.Message = message;
-            response.ResponseBody = await message.Content.ReadAsStringAsync();
+            response.ResponseBody = await message.Content.ReadAsStringAsync().ConfigureAwait(false);
 
             if (message.IsSuccessStatusCode)
             {
-                response.Data = await message.Content.ReadAsStreamAsync();
+                response.Data = await message.Content.ReadAsStreamAsync().ConfigureAwait(false);
             }
             else
             {
